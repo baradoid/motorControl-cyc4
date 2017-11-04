@@ -34,6 +34,47 @@ always @(posedge CLOCK_25) begin
 end
 
 
+wire rst;
+
+//reg [32:0] counter = 0; 
+//always @(posedge CLK_SE_AR) begin
+//	USER_LED0 <= counter[24];
+//	counter <= counter + 1;
+//end
+
+reg [9:0] posReset = 0;
+//reg [9:0] fifoWrReq=0;
+//wire [31:0] fifoDataOut[9:0];
+wire [9:0] fifoEmpty;
+
+wire [9:0] mrCtrlActive;
+reg [9:0] mrCtrlActiveR;
+
+reg [15:0] divider[9:0];
+reg [10:0] stepCounter[9:0];
+reg dirReg[9:0];
+
+reg [9:0] dataPending = 0;
+
+
+assign DebugPin_87 = step[0];
+assign DebugPin_86 = dir[0];
+assign DebugPin5 = mrCtrlActive[0];
+assign DebugPin6 = dataPending[0];
+genvar i;
+generate
+for(i = 0; i < 10; i = i + 1 ) begin : motorControlBlock
+
+motorCtrlSimple_v2 mr(.CLK(CLOCK_25), 
+							 .reset(posReset[i]),
+							 .divider(divider[i][15:0]), 
+							 .stepsToGo(stepCounter[i][10:0]), 
+							 .dirInput(dirReg[i]),
+							 .dir(dir[i]), 
+							 .step(step[i]), 
+							 .activeMode(mrCtrlActive[i]));
+end
+endgenerate
 
 reg [31:0] timerCounter; always @(posedge CLOCK_25) timerCounter <= timerCounter + 31'h1;
 
@@ -57,20 +98,7 @@ async_receiver #(.ClkFrequency(25000000), .Baud(115200)) RX(.clk(CLOCK_25),
 																					.RxD_data(uartRxData)/*,
 																					.RxD_endofpacket(RxD_endofpacket_wire),
 																					.RxD_idle(RxD_idle_wire)*/);
-	
-reg [9:0] posReset = 0;
-//reg [9:0] fifoWrReq=0;
-//wire [31:0] fifoDataOut[9:0];
-wire [9:0] fifoEmpty;
 
-wire [9:0] mrCtrlActive;
-reg [9:0] mrCtrlActiveR;
-
-reg [15:0] divider[9:0];
-reg [10:0] stepCounter[9:0];
-reg dirReg[9:0];
-
-reg [9:0] dataPending = 0;
 
 
 assign DebugPin_87 = step[0];
