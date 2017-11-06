@@ -108,7 +108,7 @@ assign DebugPin6 = dataPending[0];
 	
 reg [3:0] uartRecvState = 0;	
 reg [3:0] curMrCtrl = 0;
-reg [39:0] uartCmd;
+reg [31:0] uartCmd;
 reg [17:0] uartTimeOutCounter = 18'h0;
 
 wire sendDriveStatus = uartRxDataReady && (uartRecvState==0) && (uartRxData[3:0] == 4'hF);
@@ -131,7 +131,7 @@ always @(posedge CLOCK_25) begin
 			//uartCmdRecvData[curMrCtrl] <= {uartRxData[7:0], uartCmdRecvData[curMrCtrl][31:8]};			
 			//DebugPin1 <= 1'b1;				
 		end
-		uartCmd[39:0] <= {uartRxData[7:0], uartCmd[39:8]}; 		
+		uartCmd[31:0] <= {uartRxData[7:0], uartCmd[31:8]}; 		
 	end	
 	else begin		
 		if(uartTimeOutCounter == 18'h0) begin
@@ -151,9 +151,9 @@ always @(posedge CLOCK_25) begin
 		uartTimeOutCounter <= uartTimeOutCounter - 18'h1;		
 	end
 	
-	DebugPin2 <=  uartRxDataReadyNE && (uartRecvState == 5);
+	DebugPin2 <=  uartRxDataReadyNE && (uartRecvState == 4);
 	if(uartRxDataReadyNE) begin	
-		if(uartRecvState == 5) begin
+		if(uartRecvState == 4) begin
 			uartRecvState <= 0;		
 			//fifoWrReq[curMrCtrl] <= 1'b1;
 			//uartCmd <= {uartRxData[7:0], uartCmdRecvData[curMrCtrl][31:8]};

@@ -50,7 +50,6 @@ set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
-set_location_assignment PIN_23 -to CLOCK_50
 set_location_assignment PIN_125 -to LED
 set_location_assignment PIN_135 -to UART_RX
 set_location_assignment PIN_133 -to UART_TX
@@ -69,4 +68,24 @@ set_global_assignment -name CDF_FILE output_files/Chain3.cdf
 set_global_assignment -name CDF_FILE output_files/Chain6.cdf
 set_global_assignment -name SDC_FILE SDC1.sdc
 set_global_assignment -name QIP_FILE SFL.qip
+set_location_assignment PIN_105 -to term[0]
+set_location_assignment PIN_101 -to term[1]
+set_location_assignment PIN_100 -to term[2]
+set_location_assignment PIN_99 -to term[3]
+set_location_assignment PIN_44 -to term[4]
+set_location_assignment PIN_43 -to term[5]
+set_location_assignment PIN_42 -to term[6]
+set_location_assignment PIN_39 -to term[7]
+set_location_assignment PIN_144 -to term[8]
+set_location_assignment PIN_143 -to term[9]
+set_location_assignment PIN_23 -to CLOCK_25
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_location_assignment PIN_85 -to step[0]
+set_location_assignment PIN_86 -to dir[0]
+set_location_assignment PIN_83 -to step[1]
+set_location_assignment PIN_84 -to dir[1]
+set_location_assignment PIN_76 -to step[2]
+set_location_assignment PIN_73 -to step[3]
+set_location_assignment PIN_74 -to dir[3]
+set_location_assignment PIN_75 -to dir[2]
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
