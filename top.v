@@ -1,4 +1,4 @@
-module test2(
+module top(
 
 	//////////// CLOCK //////////
 	input  CLOCK_25,
