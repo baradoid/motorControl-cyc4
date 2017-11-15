@@ -50,8 +50,8 @@ wire [9:0] fifoEmpty;
 wire [9:0] mrCtrlActive;
 reg [9:0] mrCtrlActiveR;
 
-reg [15:0] divider[9:0];
-reg [10:0] stepCounter[9:0];
+reg [14:0] divider[9:0];
+reg [11:0] stepCounter[9:0];
 reg dirReg[9:0];
 
 reg [9:0] dataPending = 0;
@@ -67,8 +67,8 @@ for(i = 0; i < 10; i = i + 1 ) begin : motorControlBlock
 
 motorCtrlSimple_v2 mr(.CLK(CLOCK_25), 
 							 .reset(posReset[i]),
-							 .divider(divider[i][15:0]), 
-							 .stepsToGo(stepCounter[i][10:0]), 
+							 .divider(divider[i][14:0]), 
+							 .stepsToGo(stepCounter[i][11:0]), 
 							 .dirInput(dirReg[i]),
 							 .dir(dir[i]), 
 							 .step(step[i]), 
@@ -159,8 +159,8 @@ always @(posedge CLOCK_25) begin
 			//uartCmd <= {uartRxData[7:0], uartCmdRecvData[curMrCtrl][31:8]};
 			//uartCmdRecvData[curMrCtrl] <= uartCmd;
 			if(dataPending[curMrCtrl] == 0) begin
-				divider[curMrCtrl] <= uartCmd[19:4];
-				stepCounter[curMrCtrl] <= uartCmd[30:20];		
+				divider[curMrCtrl] <= uartCmd[18:4];
+				stepCounter[curMrCtrl] <= uartCmd[30:19];		
 				dirReg[curMrCtrl] <= uartCmd[31];
 				dataPending[curMrCtrl] <= 1;
 				
