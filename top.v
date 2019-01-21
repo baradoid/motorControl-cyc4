@@ -50,8 +50,8 @@ wire [9:0] fifoEmpty;
 wire [9:0] mrCtrlActive;
 reg [9:0] mrCtrlActiveR;
 
-reg [14:0] divider[9:0];
-reg [11:0] stepCounter[9:0];
+reg [15:0] divider[9:0];
+reg [15:0] stepCounter[9:0];
 reg dirReg[9:0];
 
 reg [9:0] dataPending = 0;
@@ -67,8 +67,8 @@ for(i = 0; i < 10; i = i + 1 ) begin : motorControlBlock
 
 motorCtrlSimple_v2 mr(.CLK(CLOCK_25), 
 							 .reset(posReset[i]),
-							 .divider(divider[i][14:0]), 
-							 .stepsToGo(stepCounter[i][11:0]), 
+							 .divider(divider[i][15:0]), 
+							 .stepsToGo(stepCounter[i][15:0]), 
 							 .dirInput(dirReg[i]),
 							 .dir(dir[i]), 
 							 .step(step[i]), 
@@ -83,6 +83,8 @@ wire [7:0] uartRxData;
 reg uartRxDataReadyL=1'b0; always @(posedge CLOCK_25) uartRxDataReadyL <= uartRxDataReady;
 wire uartRxDataReadyPE = ((uartRxDataReady==1'b1)&&(uartRxDataReadyL==1'b0));
 wire uartRxDataReadyNE = ((uartRxDataReady==1'b0)&&(uartRxDataReadyL==1'b1));
+
+reg uartRxDataReadyPEregDebug; always @(posedge CLOCK_25) uartRxDataReadyPEregDebug <= ((uartRxDataReady==1'b1)&&(uartRxDataReadyL==1'b0));
 
 assign DebugPin1 = uartRxDataReadyPE;
 //assign DebugPin3 = uartRxDataReadyPE;
@@ -108,7 +110,7 @@ assign DebugPin6 = dataPending[0];
 	
 reg [3:0] uartRecvState = 0;	
 reg [3:0] curMrCtrl = 0;
-reg [31:0] uartCmd;
+reg [47:0] uartCmd;
 reg [17:0] uartTimeOutCounter = 18'h0;
 
 wire sendDriveStatus = uartRxDataReady && (uartRecvState==0) && (uartRxData[3:0] == 4'hF);
@@ -131,7 +133,7 @@ always @(posedge CLOCK_25) begin
 			//uartCmdRecvData[curMrCtrl] <= {uartRxData[7:0], uartCmdRecvData[curMrCtrl][31:8]};			
 			//DebugPin1 <= 1'b1;				
 		end
-		uartCmd[31:0] <= {uartRxData[7:0], uartCmd[31:8]}; 		
+		uartCmd[47:0] <= {uartRxData[7:0], uartCmd[47:8]}; 		
 	end	
 	else begin		
 		if(uartTimeOutCounter == 18'h0) begin
@@ -151,17 +153,17 @@ always @(posedge CLOCK_25) begin
 		uartTimeOutCounter <= uartTimeOutCounter - 18'h1;		
 	end
 	
-	DebugPin2 <=  uartRxDataReadyNE && (uartRecvState == 4);
+	DebugPin2 <=  uartRxDataReadyNE && (uartRecvState == 5);
 	if(uartRxDataReadyNE) begin	
-		if(uartRecvState == 4) begin
+		if(uartRecvState == 6) begin
 			uartRecvState <= 0;		
 			//fifoWrReq[curMrCtrl] <= 1'b1;
 			//uartCmd <= {uartRxData[7:0], uartCmdRecvData[curMrCtrl][31:8]};
 			//uartCmdRecvData[curMrCtrl] <= uartCmd;
 			if(dataPending[curMrCtrl] == 0) begin
-				divider[curMrCtrl] <= uartCmd[18:4];
-				stepCounter[curMrCtrl] <= uartCmd[30:19];		
-				dirReg[curMrCtrl] <= uartCmd[31];
+				divider[curMrCtrl] <= uartCmd[31:16];
+				stepCounter[curMrCtrl] <= uartCmd[47:32];		
+				dirReg[curMrCtrl] <= uartCmd[15];
 				dataPending[curMrCtrl] <= 1;
 				
 				//divider[9] <= 15'hff;
