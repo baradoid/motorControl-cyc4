@@ -2,6 +2,7 @@ module top(
 
 	//////////// CLOCK //////////
 	input  CLOCK_25,
+	input reset,
 	output LED,
 
 	// Motor 
@@ -22,7 +23,8 @@ output DebugPin8,
 output DebugPin9,
 output debugPin106,
 output DebugPin_86,
-output DebugPin_87
+output DebugPin_87,
+output DebugPin_103
 );
 
 
@@ -58,12 +60,23 @@ reg [9:0] dataPending = 0;
 
 
 assign DebugPin_87 = step[0];
-assign DebugPin_86 = dir[0];
+assign DebugPin_103 = dir[0];
 assign DebugPin5 = mrCtrlActive[0];
 assign DebugPin6 = dataPending[0];
+wire stepCommonWire;
+//assign step[0] = stepCommonWire;
+//assign step[1] = stepCommonWire;
+//assign step[2] = stepCommonWire;
+//assign step[3] = stepCommonWire;
+//assign step[4] = stepCommonWire;
+//assign step[5] = stepCommonWire;
+//assign step[6] = stepCommonWire;
+//assign step[7] = stepCommonWire;
+//assign step[8] = stepCommonWire;
+//assign step[9] = stepCommonWire;
 genvar i;
 generate
-for(i = 0; i < 10; i = i + 1 ) begin : motorControlBlock
+for(i = 0; i < 9; i = i + 1 ) begin : motorControlBlock
 
 motorCtrlSimple_v2 mr(.CLK(CLOCK_25), 
 							 .reset(posReset[i]),
@@ -71,7 +84,7 @@ motorCtrlSimple_v2 mr(.CLK(CLOCK_25),
 							 .stepsToGo(stepCounter[i][15:0]), 
 							 .dirInput(dirReg[i]),
 							 .dir(dir[i]), 
-							 .step(step[i]), 
+							 .step(/*stepCommonWire*/step[i]), 
 							 .activeMode(mrCtrlActive[i]));
 end
 endgenerate
@@ -104,7 +117,7 @@ async_receiver #(.ClkFrequency(25000000), .Baud(115200)) RX(.clk(CLOCK_25),
 
 
 assign DebugPin_87 = step[0];
-assign DebugPin_86 = dir[0];
+//assign DebugPin_86 = dir[0];
 assign DebugPin5 = mrCtrlActive[0];
 assign DebugPin6 = dataPending[0];
 	

@@ -82,10 +82,10 @@ set_location_assignment PIN_86 -to dir[0]
 set_location_assignment PIN_83 -to step[1]
 set_location_assignment PIN_84 -to dir[1]
 set_location_assignment PIN_76 -to step[2]
-set_location_assignment PIN_73 -to step[3]
-set_location_assignment PIN_74 -to dir[3]
+set_location_assignment PIN_74 -to step[3]
+set_location_assignment PIN_73 -to dir[3]
 set_location_assignment PIN_75 -to dir[2]
-set_global_assignment -name PARTITION_NETLIST_TYPE POST_FIT -section_id Top
+set_global_assignment -name PARTITION_NETLIST_TYPE POST_SYNTH -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name ENABLE_SIGNALTAP ON
@@ -235,5 +235,23 @@ set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[23] -
 set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[26] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
 set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_IN_ENABLED=1" -section_id auto_signaltap_0
 set_global_assignment -name QIP_FILE fifo/fifo1.qip
+set_location_assignment PIN_50 -to step[4]
+set_location_assignment PIN_49 -to step[5]
+set_location_assignment PIN_31 -to step[7]
+set_location_assignment PIN_142 -to step[8]
+set_location_assignment PIN_137 -to step[9]
+set_location_assignment PIN_103 -to DebugPin_103
+set_location_assignment PIN_72 -to reset
+set_location_assignment PIN_51 -to dir[4]
+set_location_assignment PIN_46 -to dir[5]
+set_location_assignment PIN_33 -to step[6]
+set_location_assignment PIN_34 -to dir[6]
+set_location_assignment PIN_138 -to dir[9]
+set_location_assignment PIN_141 -to dir[8]
+set_location_assignment PIN_32 -to dir[7]
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name SAVE_DISK_SPACE ON
+set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON
 set_global_assignment -name SLD_FILE db/stp2_auto_stripped.stp
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
